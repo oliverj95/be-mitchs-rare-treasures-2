@@ -1,4 +1,5 @@
-module.exports = [
+module.exports = 
+[
   { shop_name: 'shop-b', owner: 'firstname-b', slogan: 'slogan-b' },
   { shop_name: 'shop-d', owner: 'firstname-c', slogan: 'slogan-d' },
   { shop_name: 'shop-e', owner: 'firstname-d', slogan: 'slogan-e' },
