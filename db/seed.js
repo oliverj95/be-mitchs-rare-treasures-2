@@ -1,6 +1,6 @@
 const db = require("./");
 const format = require("pg-format");
-const {referenceObj} = require("../utils/index");
+const {referenceObj, formatTreasureData} = require("../utils/index");
 const seed = ({ shopData, treasureData }) => {
   return db
     .query(`DROP TABLE IF EXISTS treasures;`)
@@ -35,9 +35,10 @@ const seed = ({ shopData, treasureData }) => {
         shop.owner,
         shop.slogan,
       ]);
+      console.log(formattedShopNames)
 
       const insertQuery = format(
-        `INSERT INTO shops (owner, shop_name, slogan) VALUES %L RETURNING *;
+        `INSERT INTO shops (shop_name, owner, slogan) VALUES %L RETURNING *;
       `,
         formattedShopNames
       );
@@ -46,17 +47,15 @@ const seed = ({ shopData, treasureData }) => {
     .then((shops) => {
       return shops.rows;
 })
-    .then((shops) => {
-    const shopRef = 
-// const formattedTreasureData = treasureData.map((treasure) => 
-//  [ 
-//   treasure.treasure_name, 
-//   treasure.colour,
-//   treasure.age,
-//   treasure.cost_at_auction,
-//   treasure.shop
-// ])
-// console.log(formattedTreasureData)
+    .then(
+      (shopData) => {
+        const shopRef = referenceObj(shopData.rows)
+        const formattedTreasures = formatTreasureData(treasureData, shopRef)
+        const insertTreasuresQuery = format(
+          `INSERT INTO treasures (treasure_name, colour, age, cost_at_auction, shop_id) VALUES %L RETURNING *;`, 
+          formattedTreasures
+        )
+        return db.query(insertTreasuresQuery+)
 })
 };
 

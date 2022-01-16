@@ -12,14 +12,17 @@ function referenceObj(arr) {
   const objValue = object.shop_id;
    result[objKey] = objValue 
   })   
-  console.log(result)
-// return result  
+// console.log(result)
+return result
 }   
 }
 
-function formatTreasure (referenceObj, treasureData) {
-    treasureData.forEach((data))
+function formatTreasureData (treasureData, shopRef) {
+    const formattedTreasureData =  treasureData.map((data) => {
+        return [data.treasure_name, data.colour, data.age, data.cost_at_auction, shopRef[data.shop]]
+    })
+return formattedTreasureData
 }
 //create a function that manipulates the treasure data to remove shop key and replace it with a shop id key, WITHOUT maniuplating the original data
 
-module.exports = {referenceObj, formatTreasure};
+module.exports = {referenceObj, formatTreasureData};
